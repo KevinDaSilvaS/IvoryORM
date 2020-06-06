@@ -5,7 +5,6 @@ require_once("WhereConditions.php");
 class Operations{
 
     private $dbConection;
-    private $typeOperation;
     private $whereConditions; 
 
     public function __construct()
@@ -16,7 +15,7 @@ class Operations{
 
     public function select(array $fields, array $tableNames)
     {
-        $this->typeOperation = "select";
+
         $strFields = "";
         foreach ($fields as $key => $value) {
            $strFields .= $value;
@@ -40,7 +39,7 @@ class Operations{
 
     public function update(string $tableName, array $properties)
     {
-        $this->typeOperation = "update";
+
         $updateFields = "";
         $count = 0;
 
@@ -61,13 +60,12 @@ class Operations{
 
     public function delete(string $tableName)
     {
-        $this->typeOperation = "delete";
+
         return " DELETE FROM $tableName ";
     }
 
     public function insert(string $tableName, array $fieldsAndValues)
     {
-        $this->typeOperation = "insert";
         $strFields = "";
         $strValues = "";
         $count = 0;
@@ -169,48 +167,24 @@ class Operations{
         return $this->join("FULL OUTER", $query, $tableNameJoin, $propertyNameTable1, $propertyNameTable2);
     }
 
-    public function join(string $typeJoin, string $query, string $tableNameJoin, string $propertyNameTable1, string $propertyNameTable2)
+    private function join(string $typeJoin, string $query, string $tableNameJoin, string $propertyNameTable1, string $propertyNameTable2)
     {
         return $query . " $typeJoin JOIN $tableNameJoin ON $propertyNameTable1 = $propertyNameTable2 ";
     }
 
     public function runQuery($query)
     {
-        switch ($this->typeOperation) {
-            case 'select':
-                $result = $this->dbConection->query($query);
-                break;
-            
-            case 'update':
-                $preparedStatement = $this->dbConection->prepare($query);
-                $preparedStatement->execute();
-                $result = false;
-                if ($this->dbConection->errorInfo()) {
-                    $result = true;
-                }
-                break;
+        if(preg_match("/\bselect\b/i", $query)){
+            $result = $this->dbConection->query($query);
 
-            case 'delete':
-                $preparedStatement = $this->dbConection->prepare($query);
-                $preparedStatement->execute();
-                $result = false;
-                if ($this->dbConection->errorInfo()) {
-                    $result = true;
-                }
-                break;
-
-            case 'insert':
-                $preparedStatement = $this->dbConection->prepare($query);
-                $preparedStatement->execute();
-                $result = false;
-                if ($this->dbConection->errorInfo()) {
-                    $result = true;
-                }
-                break;
+        }else{
             
-            default:
-                $result = "An error ocurred. Please report your error at ";
-                break;
+            $preparedStatement = $this->dbConection->prepare($query);
+            $preparedStatement->execute();
+            $result = false;
+            if ($this->dbConection->errorInfo()) {
+                $result = true;
+            }
         }
         
         return $result;

@@ -1,5 +1,5 @@
 <?php
 
-$db = new PDO('mysql:host=localhost;dbname=myexampledb;port=3306', "user", "thisisapassword123");
+$db = new PDO('mysql:host=localhost;dbname=mydb;port=3306', "user", "password");
 
 ?>
