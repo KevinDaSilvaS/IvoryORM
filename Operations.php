@@ -13,7 +13,7 @@ class Operations{
         $this->whereConditions =  new WhereConditions();
     }
 
-    public function select(array $fields, array $tableNames)
+    public function select(array $fields, array $tableNames, string $into = '', string $in = '')
     {
 
         $strFields = "";
@@ -25,6 +25,14 @@ class Operations{
            $strFields .= ", ";
         }
 
+        if ($into != '') {
+            $into = " INTO " . $into;
+        }
+
+        if ($in != '') {
+            $in = " IN $in ";
+        }
+
         $tables = "";
         foreach ($tableNames as $key => $value) {
             $tables .= $value;
@@ -33,7 +41,7 @@ class Operations{
             }
             $tables .= ", ";
         }
-        return " SELECT $strFields FROM $tables ";
+        return " SELECT $strFields $into $in FROM $tables ";
 
     }
 
@@ -60,7 +68,6 @@ class Operations{
 
     public function delete(string $tableName)
     {
-
         return " DELETE FROM $tableName ";
     }
 
@@ -170,6 +177,27 @@ class Operations{
     private function join(string $typeJoin, string $query, string $tableNameJoin, string $propertyNameTable1, string $propertyNameTable2)
     {
         return $query . " $typeJoin JOIN $tableNameJoin ON $propertyNameTable1 = $propertyNameTable2 ";
+    }
+
+    public function union(string $firstSelectQuery, string $secondSelectQuery, bool $isAll = false)
+    {
+        $union = " UNION ";
+        if ($isAll) {
+            $union .= "ALL ";
+        }
+
+        return $firstSelectQuery . $union . $secondSelectQuery;
+    }
+
+    public function createProcedure(string $procedureName, string $query)
+    {
+        return " CREATE PROCEDURE $procedureName AS $query GO ";
+    }
+
+    public function executeProcedure(string $procedureName)
+    {
+        $query = " EXEC $procedureName ";
+        return $this->runQuery($query);
     }
 
     public function runQuery($query)
