@@ -204,15 +204,14 @@ class Operations{
     {
         if(preg_match("/\bselect\b/i", $query)){
             $result = $this->dbConection->query($query);
-
-        }else{
+            return $result;
+        }
             
-            $preparedStatement = $this->dbConection->prepare($query);
-            $preparedStatement->execute();
-            $result = false;
-            if ($this->dbConection->errorInfo()) {
-                $result = true;
-            }
+        $preparedStatement = $this->dbConection->prepare($query);
+        $preparedStatement->execute();
+        $result = false;
+        if ($this->dbConection->errorInfo()) {
+            $result = true;
         }
         
         return $result;
