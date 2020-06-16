@@ -204,7 +204,7 @@ class Operations{
     {
         if(preg_match("/\bselect\b/i", $query)){
             $result = $this->dbConection->query($query);
-            return $result;
+            return $result->fetchAll();
         }
             
         $preparedStatement = $this->dbConection->prepare($query);
