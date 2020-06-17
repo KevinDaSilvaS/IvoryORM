@@ -2,41 +2,39 @@
 require_once('Operations.php');
 
 $arrSelect = array();
-$arrSelect[] = "nome";
-$arrSelect[] = "COUNT(linha) AS l";
+$arrSelect[] = "name";
+
 
 $arrWhere = array();
 $arrWhere[] = [
-    "propName" => "oi",
-    "fieldValue" => 30,
+    "propName" => "name",
+    "fieldValue" => 1,
     "isAnd" => false,
     "like" => true,
-    "pattern" => "%or%",
+    "pattern" => "%jon%",
 ];
 
+
 $arrWhere[] = [
-    "propName" => "tchau",
+    "propName" => "id",
     "fieldValue" => 0,
     "equal" => false,
 ];
 
+
 $tables = array();
 $tables[] = "materiais";
-/* $tables[] = "table2"; */
+
 
 $operations = new Operations();
 $select = $operations->select($arrSelect, $tables);
-/* $res = $operations->runQuery($select);
 
-foreach ($res as $key => $value) {
-    var_dump($value);
-    echo "<br>";
-} */
 
 $props = array();
-$props["nome"] = "Jocleidson";
-$props["linha"] = 20;
-$update = $operations->update("materiais", $props);
+$props["name"] = "Jonnah";
+
+
+$update = $operations->update("users", $props);
 $whereUpdate = array();
 $whereUpdate[] = [
     "propName" => "id",
@@ -53,35 +51,38 @@ $whereUpdate[] = [
     "isAll" => $select, */
     "exists" => $select,
 ];
-/* $updateWhere = $operations->where($update, $whereUpdate);
-var_dump($updateWhere); */
-/* $res = $operations->runQuery($updateWhere);
-var_dump($res); */
 
-/* $delete = $operations->delete("materiais");
+
+$updateWhere = $operations->where($update, $whereUpdate);
+var_dump($updateWhere); 
+$res = $operations->runQuery($updateWhere);
+var_dump($res); 
+
+
+$delete = $operations->delete("materiais");
 $delete = $operations->where($delete,$whereUpdate);
 var_dump($delete);
-var_dump($operations->runQuery($delete)); */
+var_dump($operations->runQuery($delete)); 
 
-/* $insert = $operations->insert("materiais", $props);
+
+$insert = $operations->insert("materiais", $props);
 var_dump($insert);
 var_dump($operations->runQuery($insert)); */
 
-/* $where = $operations->where($select, $arrWhere);
-var_dump($where); */
-/* $gbArr = array();
-$gbArr[] = "nome";
+    
+$where = $operations->where($select, $arrWhere);
+var_dump($where); 
+$gbArr = array();
+$gbArr[] = "name";
 $groupBy = $operations->select($arrSelect,$tables);
 $groupBy = $operations->groupBy($groupBy,$gbArr);
 var_dump($groupBy);
 
+
 $res = $operations->runQuery($groupBy);
 
-foreach ($res as $key => $value) {
-    var_dump($value);
-    echo "<br>";
-} */
 
 $in = $operations->where($select, $whereUpdate);
 var_dump($in);
+
 ?>
