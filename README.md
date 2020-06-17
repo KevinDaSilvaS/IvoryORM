@@ -7,9 +7,9 @@ See the Full Documentation Here
 <a>
 <h4>
 
-<h2>Ivory ORM its  an ORM based on PDO PHP features and implemented almost all the w3 sql tutorial features</h2>
+<h3>Ivory ORM its  an ORM based on PDO PHP features and implemented almost all the w3 sql tutorial features</h3>
 
-<h2>Files</h2>
+<h2>Files Descriptions</h2>
 <h5>Simple and precise Ivory ORM has just 3 files</h5>
 <p>The config file as the name says is where you will configure your database settings</p>
 <p>The operations file is the core of Ivory all the queries are executed there</p>
